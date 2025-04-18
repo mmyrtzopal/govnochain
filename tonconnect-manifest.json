@@ -1,0 +1,10 @@
+{
+  "url": "https://mmyrtzopal.github.io/govnochain",
+  "name": "GOVNOCHAIN",
+  "iconUrl": "https://raw.githubusercontent.com/mmyrtzopal/govnochain/main/govno_icon.png",
+  "termsOfUseUrl": "https://mmyrtzopal.github.io/govnochain/terms.html",
+  "privacyPolicyUrl": "https://mmyrtzopal.github.io/govnochain/privacy.html",
+  "action": {
+    "type": "ton-connect"
+  }
+}
