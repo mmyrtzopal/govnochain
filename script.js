@@ -1,31 +1,46 @@
-// Данные уровней: загружаем из localStorage или используем дефолт
-const defaultLevels = [
-  {level: 1, pct: 10, threshold: 100},
-  {level: 2, pct: 5, threshold: 200},
-  {level: 3, pct: 2, threshold: 300}
-];
-let levels = JSON.parse(localStorage.getItem('pyramidLevels')) || defaultLevels;
+const STORAGE_KEY = 'govno_pyramid_levels';
 
-function renderLevels() {
-  const container = document.getElementById('levels');
+function loadLevels() {
+  const saved = localStorage.getItem(STORAGE_KEY);
+  if (saved) {
+    try {
+      return JSON.parse(saved);
+    } catch {
+      console.warn('Не удалось распарсить уровни');
+    }
+  }
+  return [
+    { level: 1, percent: 5, threshold: 100 },
+    { level: 2, percent: 3, threshold: 200 },
+    { level: 3, percent: 1, threshold: 500 },
+  ];
+}
+
+function renderLevels(levels) {
+  const container = document.getElementById('levels-container');
   container.innerHTML = '';
-  levels.forEach(l => {
+  levels.forEach(({ level, percent, threshold }) => {
     const div = document.createElement('div');
     div.className = 'level';
-    div.textContent = `Уровень ${l.level}: ${l.pct}% от порога ${l.threshold}`;
-    container.appendChild(div);
+    div.textContent = `🥇 Уровень ${level}: ${percent}% при входе от ${threshold} GOVNO`;
+    container.append(div);
   });
 }
 
-document.getElementById('logout').addEventListener('click', () => {
-  localStorage.removeItem('walletAddress');
-  alert('Вы вышли');
-});
+document.addEventListener('DOMContentLoaded', () => {
+  const levels = loadLevels();
+  renderLevels(levels);
 
-document.getElementById('getRef').addEventListener('click', () => {
-  const addr = localStorage.getItem('walletAddress') || 'адрес_пользователя';
-  const url = `${location.origin}${location.pathname}?ref=${addr}`;
-  prompt('Ваша реф-ссылка', url);
-});
+  document.getElementById('get-ref').onclick = () => {
+    const addr = prompt('Введите ваш TON адрес');
+    if (addr) {
+      const link = `${location.origin}${location.pathname}?ref=${addr}`;
+      alert('Ваша реф-ссылка: ' + link);
+    }
+  };
 
-renderLevels();
+  document.getElementById('logout').onclick = () => {
+    localStorage.removeItem('walletAddress');
+    location.reload();
+  };
+});
