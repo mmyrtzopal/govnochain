@@ -1,51 +1,31 @@
-const STORAGE_KEY = 'govno_pyramid_levels';
+// Данные уровней: загружаем из localStorage или используем дефолт
+const defaultLevels = [
+  {level: 1, pct: 10, threshold: 100},
+  {level: 2, pct: 5, threshold: 200},
+  {level: 3, pct: 2, threshold: 300}
+];
+let levels = JSON.parse(localStorage.getItem('pyramidLevels')) || defaultLevels;
 
-function loadLevels() {
-  const saved = localStorage.getItem(STORAGE_KEY);
-  if (saved) {
-    try {
-      return JSON.parse(saved);
-    } catch {
-      console.warn('Не удалось распарсить уровни, сбрасываем в дефолт.');
-    }
-  }
-  // дефолтные уровни, если ничего нет в хранилище
-  return [
-    { level: 1, percent: 5, threshold: 100 },
-    { level: 2, percent: 3, threshold: 200 },
-    { level: 3, percent: 1, threshold: 500 },
-  ];
-}
-
-function saveLevels(levels) {
-  localStorage.setItem(STORAGE_KEY, JSON.stringify(levels));
-}
-
-function renderLevels(levels) {
-  const container = document.getElementById('levels-container');
+function renderLevels() {
+  const container = document.getElementById('levels');
   container.innerHTML = '';
-  levels.forEach(({ level, percent, threshold }) => {
+  levels.forEach(l => {
     const div = document.createElement('div');
-    div.textContent = `Уровень ${level}: ${percent}% при входе от ${threshold}`;
-    container.append(div);
+    div.className = 'level';
+    div.textContent = `Уровень ${l.level}: ${l.pct}% от порога ${l.threshold}`;
+    container.appendChild(div);
   });
 }
 
-// при загрузке страницы
-document.addEventListener('DOMContentLoaded', () => {
-  const levels = loadLevels();
-  renderLevels(levels);
-  
-  document.getElementById('get-ref').addEventListener('click', () => {
-    const addr = prompt('Ваш TON-адрес:');
-    if (addr) {
-      const ref = `${location.origin}${location.pathname}?ref=${encodeURIComponent(addr)}`;
-      alert('Ваша реф-ссылка:\n' + ref);
-    }
-  });
-
-  document.getElementById('logout').addEventListener('click', () => {
-    // просто для примера — перезагрузить страницу без ref-параметра
-    location.href = location.origin + location.pathname;
-  });
+document.getElementById('logout').addEventListener('click', () => {
+  localStorage.removeItem('walletAddress');
+  alert('Вы вышли');
 });
+
+document.getElementById('getRef').addEventListener('click', () => {
+  const addr = localStorage.getItem('walletAddress') || 'адрес_пользователя';
+  const url = `${location.origin}${location.pathname}?ref=${addr}`;
+  prompt('Ваша реф-ссылка', url);
+});
+
+renderLevels();

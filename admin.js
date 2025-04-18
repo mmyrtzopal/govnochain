@@ -1,59 +1,38 @@
-const STORAGE_KEY = 'govno_pyramid_levels';
+const defaultLevels = [
+  {level: 1, pct: 10, threshold: 100},
+  {level: 2, pct: 5, threshold: 200},
+  {level: 3, pct: 2, threshold: 300}
+];
+let levels = JSON.parse(localStorage.getItem('pyramidLevels')) || defaultLevels;
 
-function loadLevels() {
-  const saved = localStorage.getItem(STORAGE_KEY);
-  if (saved) {
-    try {
-      return JSON.parse(saved);
-    } catch {
-      console.warn('Не удалось распарсить уровни, сбрасываем в дефолт.');
-    }
-  }
-  return [
-    { level: 1, percent: 5, threshold: 100 },
-    { level: 2, percent: 3, threshold: 200 },
-    { level: 3, percent: 1, threshold: 500 },
-  ];
-}
-
-function saveLevels(levels) {
-  localStorage.setItem(STORAGE_KEY, JSON.stringify(levels));
-}
-
-function renderAdmin(levels) {
-  const tbl = document.getElementById('levels-table');
-  tbl.innerHTML = '';
+const form = document.getElementById('levelsForm');
+function renderForm() {
+  form.innerHTML = '';
   levels.forEach((l, i) => {
-    const row = tbl.insertRow();
-    row.insertCell().textContent = l.level;
-    const pct = row.insertCell();
-    const th  = row.insertCell();
-    pct.innerHTML = `<input type="number" value="\${l.percent}" data-index="\${i}" class="pct">`;
-    th.innerHTML  = `<input type="number" value="\${l.threshold}" data-index="\${i}" class="thr">`;
+    const container = document.createElement('div');
+    container.className = 'level';
+    container.innerHTML = `
+      <label>Уровень ${l.level}:<br>
+        Процент: <input type="number" data-index="${i}" class="pct" value="${l.pct}"><br>
+        Порог: <input type="number" data-index="${i}" class="thr" value="${l.threshold}">
+      </label>
+    `;
+    form.appendChild(container);
   });
 }
-
-document.addEventListener('DOMContentLoaded', () => {
-  let levels = loadLevels();
-  renderAdmin(levels);
-
-  // переписываем объект при изменении полей
-  document.getElementById('levels-table').addEventListener('input', e => {
-    const idx = +e.target.dataset.index;
-    if (e.target.classList.contains('pct')) {
-      levels[idx].percent = +e.target.value;
-    }
-    if (e.target.classList.contains('thr')) {
-      levels[idx].threshold = +e.target.value;
-    }
+document.getElementById('save').addEventListener('click', (e) => {
+  e.preventDefault();
+  document.querySelectorAll('.pct').forEach(el => {
+    levels[el.dataset.index].pct = +el.value;
   });
-
-  document.getElementById('save-btn').addEventListener('click', () => {
-    saveLevels(levels);
-    alert('Уровни сохранены!');
+  document.querySelectorAll('.thr').forEach(el => {
+    levels[el.dataset.index].threshold = +el.value;
   });
-
-  document.getElementById('logout').addEventListener('click', () => {
-    location.href = 'index.html';
-  });
+  localStorage.setItem('pyramidLevels', JSON.stringify(levels));
+  alert('Сохранено');
 });
+document.getElementById('logoutAdmin').addEventListener('click', () => {
+  localStorage.removeItem('walletAddress');
+  alert('Вышли из админки');
+});
+renderForm();
