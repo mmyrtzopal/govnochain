@@ -5,7 +5,7 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <title>GOVNOCHAIN</title>
-  <link rel="stylesheet" href="style.css?v=1.0.4" />
+  <link rel="stylesheet" href="style.css?v=1.0.5" />
 </head>
 <body>
   <div class="wrapper">
@@ -39,7 +39,13 @@
       <input type="text" placeholder="👥 Введи реферальный адрес (необязательно)" id="refInput"/>
       <button>🧻 Забрать GOVNO</button>
       <p>📦 Баланс: <strong>123 GOVNO</strong></p>
-      <button onclick="logout()">🔓 Выйти</button>
+      <button onclick="logout()" class="logout">🔓 Выйти</button>
+
+      <div class="ref-generate">
+        <p>🔗 Ваша реферальная ссылка:</p>
+        <input type="text" id="myRef" readonly />
+        <button onclick="copyRef()">📋 Скопировать</button>
+      </div>
     </section>
   </div>
 
@@ -53,6 +59,18 @@
     function logout() {
       alert('Вы вышли из GOVNOCHAIN!');
       location.reload();
+    }
+
+    // имитация адреса + генерация ссылки
+    const myAddress = "UQABCDEF1234567890";  // сюда можно вставить динамически
+    const myRef = document.getElementById("myRef");
+    myRef.value = window.location.origin + window.location.pathname + "?ref=" + myAddress;
+
+    function copyRef() {
+      myRef.select();
+      myRef.setSelectionRange(0, 99999);
+      document.execCommand("copy");
+      alert("Реф-ссылка скопирована!");
     }
   </script>
 </body>

@@ -88,6 +88,20 @@ button {
   color: #00ff99;
 }
 
+.logout {
+  display: block;
+  margin: 1.5rem auto;
+}
+
+.ref-generate {
+  margin-top: 2rem;
+}
+
+.ref-generate input {
+  width: 300px;
+  margin-top: 0.5rem;
+}
+
 @media screen and (max-width: 600px) {
   .cards {
     flex-direction: column;
