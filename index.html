@@ -1,47 +1,43 @@
+
 <!DOCTYPE html>
-<html lang="en">
+<html lang="ru">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>GOVNOCHAIN</title>
-  <link rel="stylesheet" href="style.css">
-  <script src="https://unpkg.com/@tonconnect/ui@latest/dist/tonconnect-ui.min.js"></script>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>GOVNOCHAIN — Инвестируй в GOVNO</title>
+  <link rel="stylesheet" href="style.css" />
 </head>
 <body>
   <div class="container">
     <h1>💩 GOVNOCHAIN</h1>
+    <p class="subtitle">Децентрализированная система распределения токенов</p>
 
-    <div id="connect-button"></div>
+    <div class="card-grid">
+      <div class="card bronze">
+        <h2>🥉 Bronze GOVNO</h2>
+        <p>Вход от: 10 GOVNO</p>
+        <p>Доход: 5%</p>
+        <button>💩 Вложить</button>
+      </div>
+      <div class="card silver">
+        <h2>🥈 Silver GOVNO</h2>
+        <p>Вход от: 50 GOVNO</p>
+        <p>Доход: 10%</p>
+        <button>💩 Вложить</button>
+      </div>
+      <div class="card gold">
+        <h2>🥇 Golden GOVNO</h2>
+        <p>Вход от: 100 GOVNO</p>
+        <p>Доход: 15%</p>
+        <button>💩 Вложить</button>
+      </div>
+    </div>
 
-    <div id="interface" class="hidden">
-      <p><strong>Твой адрес:</strong> <span id="wallet-address"></span></p>
-      <p><strong>Реферал:</strong> <input id="ref-input" placeholder="Вставь адрес или оставь пустым"></p>
-      <button onclick="depositGovno()">Занести GOVNO</button>
-      <button onclick="claimGovno()">Забрать GOVNO</button>
-      <p><strong>Твой баланс GOVNO:</strong> <span id="govno-balance">0</span></p>
+    <div class="interface">
+      <input type="text" placeholder="👥 Рефка от друга (необязательно)" />
+      <button>🧻 Вывести GOVNO</button>
+      <p>📦 Баланс: <strong>154 GOVNO</strong></p>
     </div>
   </div>
-
-  <script>
-    const connector = new TON_CONNECT_UI.TonConnectUI({
-      manifestUrl: 'https://mmyrtzopal.github.io/govnochain/tonconnect-manifest.json',
-      buttonRootId: 'connect-button',
-    });
-
-    connector.onStatusChange(wallet => {
-      if (wallet && wallet.account) {
-        document.getElementById('wallet-address').textContent = wallet.account.address;
-        document.getElementById('interface').classList.remove('hidden');
-      }
-    });
-
-    function depositGovno() {
-      alert('💩 GOVNO занесено! (Заглушка, подключение контракта позже)');
-    }
-
-    function claimGovno() {
-      alert('💸 GOVNO выведено! (Заглушка, подключение контракта позже)');
-    }
-  </script>
 </body>
 </html>
