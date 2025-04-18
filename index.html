@@ -5,7 +5,8 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <title>GOVNOCHAIN</title>
-  <link rel="stylesheet" href="style.css?v=1.0.5" />
+  <link rel="stylesheet" href="style.css?v=1.0.6" />
+  <script src="https://unpkg.com/@tonconnect/ui@latest/dist/tonconnect-ui.min.js"></script>
 </head>
 <body>
   <div class="wrapper">
@@ -13,6 +14,8 @@
       <h1>💩 GOVNOCHAIN</h1>
       <p>Web3-платформа перераспределения GOVNO через блокчейн</p>
     </header>
+
+    <div id="connect-button"></div>
 
     <section class="cards">
       <div class="card bronze">
@@ -38,7 +41,7 @@
     <section class="ref-section">
       <input type="text" placeholder="👥 Введи реферальный адрес (необязательно)" id="refInput"/>
       <button>🧻 Забрать GOVNO</button>
-      <p>📦 Баланс: <strong>123 GOVNO</strong></p>
+      <p>📦 Баланс: <strong id="wallet-balance">0 GOVNO</strong></p>
       <button onclick="logout()" class="logout">🔓 Выйти</button>
 
       <div class="ref-generate">
@@ -50,23 +53,33 @@
   </div>
 
   <script>
+    const connector = new TON_CONNECT_UI.TonConnectUI({
+      manifestUrl: 'https://mmyrtzopal.github.io/govnochain/tonconnect-manifest.json',
+      buttonRootId: 'connect-button',
+    });
+
+    // слушаем события подключения и сохраняем адрес
+    connector.onStatusChange(wallet => {
+      if (wallet && wallet.account && wallet.account.address) {
+        const myAddress = wallet.account.address;
+        const myRef = document.getElementById("myRef");
+        myRef.value = window.location.origin + window.location.pathname + "?ref=" + myAddress;
+      }
+    });
+
     // авто-вставка рефки из URL
     const params = new URLSearchParams(window.location.search);
     const ref = params.get("ref");
     if (ref) document.getElementById("refInput").value = ref;
 
-    // имитация logout
     function logout() {
-      alert('Вы вышли из GOVNOCHAIN!');
+      connector.disconnect();
+      alert("Вы вышли из GOVNOCHAIN!");
       location.reload();
     }
 
-    // имитация адреса + генерация ссылки
-    const myAddress = "UQABCDEF1234567890";  // сюда можно вставить динамически
-    const myRef = document.getElementById("myRef");
-    myRef.value = window.location.origin + window.location.pathname + "?ref=" + myAddress;
-
     function copyRef() {
+      const myRef = document.getElementById("myRef");
       myRef.select();
       myRef.setSelectionRange(0, 99999);
       document.execCommand("copy");
