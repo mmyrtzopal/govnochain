@@ -1,18 +1,19 @@
 <!DOCTYPE html>
 <html lang="ru">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>GOVNOCHAIN</title>
-  <link rel="stylesheet" href="styles.css" />
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>GOVNOCHAIN | mainnet</title>
+  <link rel="stylesheet" href="style.css" />
 </head>
 <body>
   <div class="container">
-    <h1>💩 GOVNOCHAIN</h1>
-    <div id="levels-container"></div>
-    <div class="actions">
-      <button id="get-ref">Получить реф-ссылку</button>
-      <button id="logout">Выйти</button>
+    <h1>💩 GOVNOCHAIN (Mainnet)</h1>
+    <input id="amount" placeholder="Сколько GOVNO вложить?" type="number" />
+    <div>
+      <button onclick="deposit()">💸 Вложить</button>
+      <button onclick="claim()">🧻 Забрать</button>
+      <button onclick="copyRef()">📋 Реф-ссылка</button>
     </div>
   </div>
   <script src="script.js"></script>
