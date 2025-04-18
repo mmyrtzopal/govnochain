@@ -5,7 +5,7 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <title>GOVNOCHAIN</title>
-  <link rel="stylesheet" href="style.css" />
+  <link rel="stylesheet" href="style.css?v=1.0.4" />
 </head>
 <body>
   <div class="wrapper">
@@ -36,10 +36,24 @@
     </section>
 
     <section class="ref-section">
-      <input type="text" placeholder="👥 Введи реферальный адрес (необязательно)"/>
+      <input type="text" placeholder="👥 Введи реферальный адрес (необязательно)" id="refInput"/>
       <button>🧻 Забрать GOVNO</button>
       <p>📦 Баланс: <strong>123 GOVNO</strong></p>
+      <button onclick="logout()">🔓 Выйти</button>
     </section>
   </div>
+
+  <script>
+    // авто-вставка рефки из URL
+    const params = new URLSearchParams(window.location.search);
+    const ref = params.get("ref");
+    if (ref) document.getElementById("refInput").value = ref;
+
+    // имитация logout
+    function logout() {
+      alert('Вы вышли из GOVNOCHAIN!');
+      location.reload();
+    }
+  </script>
 </body>
 </html>
