@@ -1,87 +1,20 @@
-
 <!DOCTYPE html>
 <html lang="ru">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>GOVNOCHAIN Admin</title>
-  <link rel="stylesheet" href="style.css?v=1.0.7" />
-  <script src="https://unpkg.com/@tonconnect/ui@latest/dist/tonconnect-ui.min.js"></script>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1.0">
+  <title>Пирамида GOVNO</title>
+  <link rel="stylesheet" href="styles.css">
 </head>
 <body>
-  <div class="wrapper">
-    <header>
-      <h1>💩 GOVNOCHAIN</h1>
-      <p>Добро пожаловать в Web3-пирамиду</p>
-      <div id="connect-button"></div>
-    </header>
-
-    <section class="cards">
-      <div class="card bronze">
-        <h2>🥉 Bronze</h2>
-        <p>Вход от: <span id="bronze-min">10</span> GOVNO</p>
-        <p>Доход: <span id="bronze-percent">40</span>%</p>
-        <button>💩 Вложить</button>
-      </div>
-      <div class="card silver">
-        <h2>🥈 Silver</h2>
-        <p>Вход от: <span id="silver-min">50</span> GOVNO</p>
-        <p>Доход: <span id="silver-percent">45</span>%</p>
-        <button>💩 Вложить</button>
-      </div>
-      <div class="card gold">
-        <h2>🥇 Golden</h2>
-        <p>Вход от: <span id="gold-min">100</span> GOVNO</p>
-        <p>Доход: <span id="gold-percent">50</span>%</p>
-        <button>💩 Вложить</button>
-      </div>
-    </section>
-
-    <section id="admin-panel" class="hidden">
-      <h3>👑 Панель владельца</h3>
-      <p>Измените пороги и проценты:</p>
-      <div class="settings-grid">
-        <div><label>Bronze мин:</label><input id="set-bronze-min" type="number" /></div>
-        <div><label>Bronze %:</label><input id="set-bronze-percent" type="number" /></div>
-        <div><label>Silver мин:</label><input id="set-silver-min" type="number" /></div>
-        <div><label>Silver %:</label><input id="set-silver-percent" type="number" /></div>
-        <div><label>Gold мин:</label><input id="set-gold-min" type="number" /></div>
-        <div><label>Gold %:</label><input id="set-gold-percent" type="number" /></div>
-      </div>
-      <button onclick="applySettings()">💾 Сохранить</button>
-    </section>
+  <div class="container">
+    <h1>Пирамида GOVNO</h1>
+    <div id="levels"></div>
+    <div class="buttons">
+      <button id="getRef">Получить реф-ссылку</button>
+      <button id="logout">Выйти</button>
+    </div>
   </div>
-
-  <script>
-    const owner = "kQA0te5_NXqym-CZam9cHHDF1k-gI1dv_FUokrRsjsbuvHll";
-    const connector = new TON_CONNECT_UI.TonConnectUI({
-      manifestUrl: 'https://mmyrtzopal.github.io/govnochain/tonconnect-manifest.json',
-      buttonRootId: 'connect-button',
-    });
-
-    connector.onStatusChange(wallet => {
-      if (wallet && wallet.account && (wallet.account.address === owner || wallet.account.address === "UQA0te5_NXqym-CZam9cHHDF1k-gI1dv_FUokrRsjsbuvJ8q")) {
-        document.getElementById("admin-panel").classList.remove("hidden");
-      }
-    });
-
-    function applySettings() {
-      const bronzeMin = document.getElementById("set-bronze-min").value;
-      const bronzePct = document.getElementById("set-bronze-percent").value;
-      const silverMin = document.getElementById("set-silver-min").value;
-      const silverPct = document.getElementById("set-silver-percent").value;
-      const goldMin = document.getElementById("set-gold-min").value;
-      const goldPct = document.getElementById("set-gold-percent").value;
-
-      document.getElementById("bronze-min").textContent = bronzeMin;
-      document.getElementById("bronze-percent").textContent = bronzePct;
-      document.getElementById("silver-min").textContent = silverMin;
-      document.getElementById("silver-percent").textContent = silverPct;
-      document.getElementById("gold-min").textContent = goldMin;
-      document.getElementById("gold-percent").textContent = goldPct;
-
-      alert("Обновлено!");
-    }
-  </script>
+  <script src="script.js"></script>
 </body>
 </html>
